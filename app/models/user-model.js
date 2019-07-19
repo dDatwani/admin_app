@@ -11,7 +11,7 @@ var userModel = {
 
 function getAllUser() {
     return new Promise((resolve,reject) => {
-        db.query(`CALL get_user()`,(error,rows,fields)=>{
+        db.query(`SELECT * FROM users`,(error,rows,fields)=>{
             if(!!error) {
                 dbFunc.connectionRelease;
                 reject(error);

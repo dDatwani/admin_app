@@ -12,7 +12,7 @@ var AuthenticRoute = require('../app/routes/authentic.route');
 var errorCode = require('../common/error-code')
 var errorMessage = require('../common/error-methods')
 var checkToken = require('./secureRoute');
-
+var userModel = require("../app/models/user-model.js");
 // var schedule = require('node-schedule');
  
 // var j = schedule.scheduleJob('*/1 * * * *', function(){
@@ -57,7 +57,8 @@ app.use(function (err, req, res, next) {
 
 // index route
 app.get('/', (req,res) => {
-    res.send('hello world');
+  getAllUser().then(data => res.send(data));
+    // res.send('hello world');
 });
 
 var ApiConfig = {
@@ -65,5 +66,13 @@ var ApiConfig = {
 }
 
 UserRoute.init(secureApi);
-
+function getAllUser() {
+    return new Promise((resolve,reject) => {
+        userModel.getAllUser().then((data)=>{
+            resolve(data);
+        }).catch((err) => {
+            reject(err);
+        })
+    });
+}
 module.exports = ApiConfig;
