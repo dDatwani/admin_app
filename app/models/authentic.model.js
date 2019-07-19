@@ -9,7 +9,7 @@ var authenticModel = {
 
 function authentic(authenticData) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM user WHERE username ='${authenticData.username}'`, (error, rows, fields) => {
+        db.query(`SELECT * FROM users WHERE username ='${authenticData.username}'`, (error, rows, fields) => {
             if (error) {
                 reject(error);
             } else {
@@ -42,7 +42,7 @@ function signup(user) {
                     return next(err);
                 }
                 user.password = hash;
-                db.query("SELECT * FROM user WHERE username='"+user.username+"'", (error, rows, fields) => {
+                db.query("SELECT * FROM users WHERE username='"+user.username+"'", (error, rows, fields) => {
                     if (error) {
                         dbFunc.connectionRelease;
                         reject(error);
@@ -50,7 +50,7 @@ function signup(user) {
                         dbFunc.connectionRelease;
                         reject({"success":false,"message":"user already exist ! try with different user"});
                     } else {
-                        db.query("INSERT INTO user(username,password)VALUES('" + user.username + "','" + user.password + "')", (error, rows, fields) => {
+                        db.query("INSERT INTO users(username,password)VALUES('" + user.username + "','" + user.password + "')", (error, rows, fields) => {
                             if (error) {
                                 dbFunc.connectionRelease;
                                 reject(error);
