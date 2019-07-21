@@ -4,10 +4,10 @@ var smtpTransport = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
-    auth: {
-        user: 'xxx@xx.com',
-        pass: 'xxxx'
-    }
+   auth: {
+    user: testAccount.user, // generated ethereal user
+    pass: testAccount.pass // generated ethereal password
+   }
 });
 
 function mail(messageBody) {
