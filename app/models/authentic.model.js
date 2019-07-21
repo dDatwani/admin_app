@@ -82,8 +82,16 @@ function socialSignup(user) {
                         dbFunc.connectionRelease;
                         reject(error);
                     } else {
-                        dbFunc.connectionRelease;
-                        resolve(rows);
+                        db.query(`SELECT * FROM users WHERE social_login_key ='${user.social_login_key}'`, (error, rows, fields) => {
+                            if (error) {
+                                dbFunc.connectionRelease;
+                                reject(error);
+                            } else if(rows.length > 0) {
+                                dbFunc.connectionRelease;
+                                resolve(rows);
+                            }
+                        });
+                        
                     }
                 });
             }
