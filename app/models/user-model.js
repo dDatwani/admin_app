@@ -17,7 +17,7 @@ function getAllUser() {
                 reject(error);
             } else {
                 dbFunc.connectionRelease;
-                resolve(rows[0]);
+                resolve(rows);
             }
        });
     });
