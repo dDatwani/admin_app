@@ -22,6 +22,7 @@ function sebdDemoMail(req,res) {
   mail.forgotPasswordMail('hi this is demo mail', 'mailtodeepak.code@gmail.com').then(msg=>{
     res.json({'msg':'send'});
   }).catch(err => {
+    console.log('error in mail send');
     console.log(err);
   });
   
