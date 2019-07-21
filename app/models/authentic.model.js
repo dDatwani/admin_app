@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 
 var authenticModel = {
     authentic: authentic,
-    signup: signup
+    signup: signup,
+    socialSignup: socialSignup
 }
 
 function authentic(authenticData) {
@@ -66,7 +67,29 @@ function signup(user) {
         });
     });
 }
-
+function socialSignup(user) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM users WHERE social_login_key ='${user.social_login_key}'`, (error, rows, fields) => {
+            if (error) {
+                dbFunc.connectionRelease;
+                reject(error);
+            } else if(rows.length > 0) {
+                dbFunc.connectionRelease;
+                resolve(rows);
+            } else if(rows.length === 0) {
+                db.query("INSERT INTO users(username,email,social_login_key,role_id)VALUES('" + user.username + "','" + user.email + "','" + user.social_login_key + "','" + user.role_id + "')", (error, rows, fields) => {
+                    if (error) {
+                        dbFunc.connectionRelease;
+                        reject(error);
+                    } else {
+                        dbFunc.connectionRelease;
+                        resolve(rows);
+                    }
+                });
+            }
+        })
+    });
+}
 module.exports = authenticModel;
 
 

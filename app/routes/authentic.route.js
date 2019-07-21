@@ -13,13 +13,16 @@ function init(router) {
         .post(authentic); 
     router.route('/signup')
           .post(signup); 
+    router.route('/socialSignup')
+          .post(socialSignup); 
 }
 
 function authentic(req,res) {
   var authenticData=req.body;
-  
+  console.log(authenticData);
   //Validating the input entity
    var json_format = iValidator.json_schema(schema.postSchema, authenticData, "authentic");
+   console.log(json_format);
    if (json_format.valid == false) {
      return res.status(422).send(json_format.errorMessage);
    }
@@ -40,7 +43,29 @@ function authentic(req,res) {
   });
 
 }
-
+function socialSignup(req, res) {
+  var signUpData=req.body;
+  
+  //Validating the input entity
+  var json_format = iValidator.json_schema(schema.postSchema, signUpData, "signUpData");
+  if (json_format.valid == false) {
+    return res.status(422).send(json_format.errorMessage);
+  }
+  authenticService.socialSignup(signUpData).then((data) => {
+    if(data) {
+      var username = data.username;
+      const token = jwt.sign({username},'my_secret_key',{ expiresIn: 60*60*24 });
+      res.json({
+        "success":true,
+        "data":data,
+        "token":token
+      });
+     }
+  }).catch((err) => {
+    mail.mail(err);
+    res.json(err);
+  });
+}
 
 function signup(req,res) {
   var signUpData=req.body;

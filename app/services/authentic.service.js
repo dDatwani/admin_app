@@ -3,7 +3,8 @@ var authenticModel = require("../models/authentic.model");
 
 var authenticService = {
     authentic: authentic,
-    signup:signup
+    signup:signup,
+    socialSignup: socialSignup
 }
 
 function authentic(authenticData) {
@@ -29,7 +30,15 @@ function signup(signUpData) {
    
 }
 
-
+function socialSignup(data) {
+    return new Promise( (resolve, reject) => {
+        authenticModel.socialSignup(data).then( (data) => {
+            resolve(data)
+        }).catch( (err) => {
+            reject(err);
+        })
+    })
+}
 
 module.exports = authenticService;
 
