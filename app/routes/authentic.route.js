@@ -23,6 +23,7 @@ function sebdDemoMail(req,res) {
     res.json({'msg':'send'});
   }).catch(err => {
     console.log('error in mail send');
+    res.json(err);
     console.log(err);
   });
   

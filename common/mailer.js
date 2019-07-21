@@ -1,6 +1,6 @@
 var nodemailer = require("nodemailer");
 var helper = require('sendgrid').mail;
-let testAccount = await nodemailer.createTestAccount();
+var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 var smtpTransport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -33,7 +33,7 @@ function forgotPasswordMail(messageBody, to) {
     var subject = 'Forgot Password request from admin-app';
     var content = new helper.Content('text/plain', messageBody);
     var mail = new helper.Mail(from_email, subject, to_email, content);
-    var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+    
     var request = sg.emptyRequest({
     method: 'POST',
     path: '/v3/mail/send',
@@ -44,6 +44,7 @@ function forgotPasswordMail(messageBody, to) {
             if(error) {
                 reject(error);
             }else {
+                console.log('is this resolve');
                 console.log(response.statusCode);
                 console.log(response.body);
                 console.log(response.headers);
