@@ -1,11 +1,13 @@
 var nodemailer = require("nodemailer");
 let testAccount = await nodemailer.createTestAccount();
 var smtpTransport = nodemailer.createTransport({
-   service: "gmail",  // sets automatically host, port and connection security settings
-   auth: {
-    user: testAccount.user, // generated ethereal user
-    pass: testAccount.pass // generated ethereal password
-   }
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'xxx@xx.com',
+        pass: 'xxxx'
+    }
 });
 
 function mail(messageBody) {
