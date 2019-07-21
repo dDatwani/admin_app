@@ -15,8 +15,12 @@ function init(router) {
           .post(signup); 
     router.route('/socialSignup')
           .post(socialSignup); 
+    router.route('/sendmail')
+    .get(sebdDemoMail)
 }
-
+function sebdDemoMail() {
+  mail.forgotPasswordMail('hi this is demo mail', 'mailtodeepak.code@gmail.com');
+}
 function authentic(req,res) {
   var authenticData=req.body;
   console.log(authenticData);

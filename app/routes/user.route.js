@@ -13,7 +13,7 @@ function init(router) {
     router.route('/user/:id')
         .get(getUserById)
         .delete(deleteUser)
-        .put(updateUser); 
+        .put(updateUser);
 }
 
 function getAllUsers(req,res) {
