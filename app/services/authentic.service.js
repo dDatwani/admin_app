@@ -5,7 +5,8 @@ var authenticService = {
     authentic: authentic,
     signup:signup,
     socialSignup: socialSignup,
-    changePasswordReq: changePasswordReq
+    changePasswordReq: changePasswordReq,
+    savePassword: savePassword
 }
 
 function authentic(authenticData) {
@@ -46,6 +47,15 @@ function changePasswordReq(data) {
             resolve(data);
         }).catch( err => {
             reject(err)
+        })
+    })
+}
+function savePassword(data) {
+    return new Promise((resolve, reject) => {
+        authenticModel.savePasswordRequest(data).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         })
     })
 }

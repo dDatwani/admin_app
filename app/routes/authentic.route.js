@@ -16,7 +16,9 @@ function init(router) {
     router.route('/socialSignup')
           .post(socialSignup); 
     router.route('/changepassword')
-    .post(changePassword)
+    .post(changePassword);
+    router.route('/savepassword')
+    .post(savepassword);
 }
 function changePassword(req,res) {
   var mailerInfo = req.body;
@@ -35,9 +37,14 @@ function changePassword(req,res) {
     });
   }).catch(err => {
     res.json(err);
+  });
+}
+function savepassword(req, res) {
+  authenticService.savePassword(req.body).then(response => {
+    res.json({'response':response, 'success': true});
+  }).catch(err => {
+    res.json(err);
   })
-  
-  
 }
 function authentic(req,res) {
   var authenticData=req.body;

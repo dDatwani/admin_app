@@ -6,7 +6,8 @@ var authenticModel = {
     authentic: authentic,
     signup: signup,
     socialSignup: socialSignup,
-    changePasswordRequest: changePasswordRequest
+    changePasswordRequest: changePasswordRequest,
+    savePasswordRequest: savePasswordRequest
 }
 
 function authentic(authenticData) {
@@ -30,6 +31,32 @@ function authentic(authenticData) {
         });
     });
 
+}
+function savePasswordRequest(data) {
+    return new Promise((resolve, reject)=> {
+        bcrypt.genSalt(10, function (err, salt) {
+            if (err) {
+                return next(err);
+            }
+            bcrypt.hash(data.password, salt, function (err, hash) {
+                if (err) {
+                    return next(err);
+                }
+                data.password = hash;
+                db.query("UPDATE users set password='"+data.password+"' WHERE request_password_key='"+data.key+"'",(error,rows,fields)=>{
+                    if(!!error) {
+                        dbFunc.connectionRelease;
+                        reject(error);
+                    } else {
+                        dbFunc.connectionRelease;
+                        resolve(rows);
+                    }
+               });
+            })
+
+        });
+        
+    })
 }
 function changePasswordRequest(data) {
     return new Promise( (resolve, reject) => {
