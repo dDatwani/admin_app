@@ -15,12 +15,14 @@ function init(router) {
           .post(signup); 
     router.route('/socialSignup')
           .post(socialSignup); 
-    router.route('/sendmail')
-    .get(sebdDemoMail)
+    router.route('/changepassword')
+    .post(changePassword)
 }
-function sebdDemoMail(req,res) {
-  mail.forgotPasswordMail('hi this is demo mail', 'mailtodeepak.code@gmail.com').then(msg=>{
-    res.json({'msg':msg});
+function changePassword(req,res) {
+  var mailerInfo = req.body;
+  mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}">${mailerInfo.url}</a>`;
+  mail.forgotPasswordMail(mailerMsg, mailerInfo.to).then( msg => {
+    res.json({'msg':msg, 'success': true});
   }).catch(err => {
     console.log('error in mail send');
     res.json(err);
