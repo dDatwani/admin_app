@@ -27,7 +27,7 @@ function changePassword(req,res) {
     key: Math.floor((Math.random() * 1000000000000000) + 1)
   }
   authenticService.changePasswordReq(data).then( result => {
-    mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}/${data.key}">${mailerInfo.url}</a>`;
+    mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}${data.key}">${mailerInfo.url}</a>`;
     mail.forgotPasswordMail(mailerMsg, data.email).then( msg => {
       res.json({'msg':msg, 'success': true});
     }).catch(err => {
