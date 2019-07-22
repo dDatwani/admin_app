@@ -4,8 +4,8 @@ var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 var smtpTransport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'mailtodeepak.me@gmail.com', // generated ethereal user
-        pass: `*716dta2534#` // generated ethereal password
+        user: 'deepak.nouse@gmail.com', // generated ethereal user
+        pass: `*nouse123` // generated ethereal password
    }
 });
 
@@ -27,7 +27,7 @@ function mail(messageBody) {
      });
 }
 function forgotPasswordMail(messageBody, to) {
-    let messageBodyJson = JSON.stringify(messageBody);
+    /*let messageBodyJson = JSON.stringify(messageBody);
     var from_email = new helper.Email('mailtodeepak.me@gmail.com');
     var to_email = new helper.Email(to);
     var subject = 'Forgot Password request from admin-app';
@@ -52,8 +52,22 @@ function forgotPasswordMail(messageBody, to) {
             }
             
           });
+    });*/
+    let messageBodyJson = JSON.stringify(messageBody)
+    return new Promise( (resolve, reject)=> {
+        smtpTransport.sendMail({  //email options
+            from: "deepak.nouse@gmail.com", // sender address.  Must be the same as authenticated user if using Gmail.
+            to: to, // receiver
+            subject: "Password reset mail", // subject
+            text: messageBodyJson // body
+         }, function(error, response){  //callback
+            if(error){
+               reject(error);
+            }else{
+                resolve(response);
+            }
+         });
     });
-    
 }
 
 module.exports = {
