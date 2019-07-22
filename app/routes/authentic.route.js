@@ -33,6 +33,8 @@ function changePassword(req,res) {
       res.json(err);
       console.log(err);
     });
+  }).catch(err => {
+    res.json(err);
   })
   
   
