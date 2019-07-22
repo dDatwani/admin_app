@@ -4,7 +4,8 @@ var authenticModel = require("../models/authentic.model");
 var authenticService = {
     authentic: authentic,
     signup:signup,
-    socialSignup: socialSignup
+    socialSignup: socialSignup,
+    changePasswordReq: changePasswordReq
 }
 
 function authentic(authenticData) {
@@ -39,6 +40,14 @@ function socialSignup(data) {
         })
     })
 }
-
+function changePasswordReq(data) {
+    return new Promise( (resolve, reject) => {
+        authenticModel.changePasswordRequest(data).then( data => {
+            resolve(data);
+        }).catch( err => {
+            reject(err)
+        })
+    })
+}
 module.exports = authenticService;
 

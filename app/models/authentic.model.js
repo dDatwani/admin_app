@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 var authenticModel = {
     authentic: authentic,
     signup: signup,
-    socialSignup: socialSignup
+    socialSignup: socialSignup,
+    changePasswordRequest: changePasswordRequest
 }
 
 function authentic(authenticData) {
@@ -30,7 +31,19 @@ function authentic(authenticData) {
     });
 
 }
-
+function changePasswordRequest(data) {
+    return new Promise( (resolve, reject) => {
+        db.query("UPDATE users set request_password_key='"+data.key+"' WHERE email='"+data.email+"'",(error,rows,fields)=>{
+            if(!!error) {
+                dbFunc.connectionRelease;
+                reject(error);
+            } else {
+                dbFunc.connectionRelease;
+                resolve(rows);
+            }
+       });    
+    });
+}
 
 function signup(user) {
     return new Promise((resolve, reject) => {

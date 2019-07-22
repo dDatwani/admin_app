@@ -20,14 +20,21 @@ function init(router) {
 }
 function changePassword(req,res) {
   var mailerInfo = req.body;
-  mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}">${mailerInfo.url}</a>`;
-  mail.forgotPasswordMail(mailerMsg, mailerInfo.to).then( msg => {
-    res.json({'msg':msg, 'success': true});
-  }).catch(err => {
-    console.log('error in mail send');
-    res.json(err);
-    console.log(err);
-  });
+  var data = {
+    email: mailerInfo.email,
+    key: Math.floor((Math.random() * 1000000000000000) + 1)
+  }
+  authenticService.changePasswordReq(data).then( result => {
+    mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}/${data.key}">${mailerInfo.url}</a>`;
+    mail.forgotPasswordMail(mailerMsg, mailerInfo.to).then( msg => {
+      res.json({'msg':msg, 'success': true});
+    }).catch(err => {
+      console.log('error in mail send');
+      res.json(err);
+      console.log(err);
+    });
+  })
+  
   
 }
 function authentic(req,res) {
