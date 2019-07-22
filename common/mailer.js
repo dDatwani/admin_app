@@ -1,9 +1,8 @@
 var nodemailer = require("nodemailer");
-var fromMail = 'deepak.nouse@gmail.com';
 var smtpTransport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: fromMail, // generated ethereal user
+        user: 'deepak.nouse@gmail.com', // generated ethereal user
         pass: `*nouse123` // generated ethereal password
    }
 });
@@ -27,9 +26,10 @@ function mail(messageBody) {
 }
 function forgotPasswordMail(messageBody, to) {
     // let messageBodyJson = JSON.stringify(messageBody)
+    console.log(to);
     return new Promise( (resolve, reject)=> {
         smtpTransport.sendMail({  //email options
-            from: fromMail, // sender address.  Must be the same as authenticated user if using Gmail.
+            from: 'deepak.nouse@gmail.com', // sender address.  Must be the same as authenticated user if using Gmail.
             to: to, // receiver
             subject: "Password reset request", // subject
             html: messageBody // body

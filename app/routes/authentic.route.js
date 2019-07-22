@@ -26,7 +26,7 @@ function changePassword(req,res) {
   }
   authenticService.changePasswordReq(data).then( result => {
     mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}/${data.key}">${mailerInfo.url}</a>`;
-    mail.forgotPasswordMail(mailerMsg, data.emial).then( msg => {
+    mail.forgotPasswordMail(mailerMsg, data.email).then( msg => {
       res.json({'msg':msg, 'success': true});
     }).catch(err => {
       console.log('error in mail send');
