@@ -29,7 +29,7 @@ function changePassword(req,res) {
   authenticService.changePasswordReq(data).then( result => {
     mailerMsg = `<p>hi! this mail is regard to change password.</p><a href="${mailerInfo.url}${data.key}">${mailerInfo.url}</a>`;
     mail.forgotPasswordMail(mailerMsg, data.email).then( msg => {
-      res.json({'msg':msg, 'success': true});
+      res.json({'message':'Your request for change password sent! Check your mail', 'success': true});
     }).catch(err => {
       console.log('error in mail send');
       res.json(err);
@@ -41,24 +41,23 @@ function changePassword(req,res) {
 }
 function savepassword(req, res) {
   authenticService.savePassword(req.body).then(response => {
-    res.json({'response':response, 'success': true});
+    res.json({'response':response, 'success': true, 'message': "Your Password is update! do login with new password"});
   }).catch(err => {
     res.json(err);
   })
 }
 function authentic(req,res) {
   var authenticData=req.body;
-  console.log(authenticData);
-  //Validating the input entity
-   var json_format = iValidator.json_schema(schema.postSchema, authenticData, "authentic");
-   console.log(json_format);
+  
+  var json_format = iValidator.json_schema(schema.postSchema, authenticData, "authentic");
+   
    if (json_format.valid == false) {
      return res.status(422).send(json_format.errorMessage);
    }
 
    authenticService.authentic(authenticData).then((data) => {
    if(data) {
-      var username = data.username;
+      var username = data.email;
       const token = jwt.sign({username},'my_secret_key',{ expiresIn: 60*60*24 });
       res.json({
         "success":true,

@@ -13,18 +13,18 @@
     "postSchema":{
         "type": "object",
         "required": [
-          "username"     
+          "email"     
         ],
         "properties": {
           "username" : {
             "type": "string",
             "minLength": 1,
-            "maxLength": 10
+            "maxLength": 20
           },
           "password" : {
             "type" : "string",
             "minLength": 1,
-            "maxLength": 10
+            "maxLength": 20
           }
         }
      }

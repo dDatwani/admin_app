@@ -12,20 +12,26 @@ var authenticModel = {
 
 function authentic(authenticData) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM users WHERE username ='${authenticData.username}'`, (error, rows, fields) => {
+        db.query(`SELECT * FROM users WHERE email ='${authenticData.email}'`, (error, rows, fields) => {
             if (error) {
                 reject(error);
             } else {
-                bcrypt.compare(authenticData.password, rows[0].password, function (err, isMatch) {
-                    if (err) {
-                        reject(error);
-                    } else if (isMatch) {
-                        resolve(rows);
-                    }
-                    else {
-                        reject({"success":false,"message":"password doesnot match"});
-                    }
-                });
+                console.log(rows[0]);
+                if(rows.length > 0) {
+                    bcrypt.compare(authenticData.password, rows[0].password, function (err, isMatch) {
+                        if (err) {
+                            reject(error);
+                        } else if (isMatch) {
+                            resolve(rows);
+                        }
+                        else {
+                            reject({"success":false,"message":"password doesnot match"});
+                        }
+                    });
+                }else {
+                    reject({"success":false,"message":"User name doesno't exist"});
+                }
+                
 
             }
         });
@@ -83,7 +89,7 @@ function signup(user) {
                     return next(err);
                 }
                 user.password = hash;
-                db.query("SELECT * FROM users WHERE username='"+user.username+"'", (error, rows, fields) => {
+                db.query("SELECT * FROM users WHERE email='"+user.email+"'", (error, rows, fields) => {
                     if (error) {
                         dbFunc.connectionRelease;
                         reject(error);
@@ -91,7 +97,7 @@ function signup(user) {
                         dbFunc.connectionRelease;
                         reject({"success":false,"message":"user already exist ! try with different user"});
                     } else {
-                        db.query("INSERT INTO users(username,password)VALUES('" + user.username + "','" + user.password + "')", (error, rows, fields) => {
+                        db.query("INSERT INTO users(email,password)VALUES('" + user.email + "','" + user.password + "')", (error, rows, fields) => {
                             if (error) {
                                 dbFunc.connectionRelease;
                                 reject(error);
